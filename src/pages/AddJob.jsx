@@ -13,7 +13,7 @@ const AddJob = () => {
     e.preventDefault();
     const formData = new FormData(e.target)
     const data = Object.fromEntries(formData.entries());
-
+    // console.log(data);
     axios.post('http://localhost:9000/jobs', data)
       .then(data => {
         console.log(data.data);
@@ -62,6 +62,7 @@ const AddJob = () => {
 
               {/* Date Picker Input Field */}
               <DatePicker
+                name='deadline'
                 className='border p-2 rounded-md'
                 selected={startDate}
                 onChange={date => setStartDate(date)}

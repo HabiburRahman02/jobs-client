@@ -3,7 +3,7 @@
 import { Link } from 'react-router-dom'
 
 const JobCard = ({ job }) => {
-  const { job_title, category, description, min_price, max_price } = job
+  const { job_title, category, description, min_price, max_price, deadline } = job
   return (
     <Link
       to={`/job/1`}
@@ -11,7 +11,7 @@ const JobCard = ({ job }) => {
     >
       <div className='flex items-center justify-between'>
         <span className='text-xs font-light text-gray-800 '>
-          Deadline: 28/05/2024
+          Deadline:{deadline}
         </span>
         <span className='px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full '>
           {category}
@@ -27,7 +27,7 @@ const JobCard = ({ job }) => {
           {description}
         </p>
         <p className='mt-2 text-sm font-bold text-gray-600 '>
-          Range: ${min_price} - ${min_price}
+          Range: ${min_price} - ${max_price}
         </p>
         <p className='mt-2 text-sm font-bold text-gray-600 '>Total Bids: 0</p>
       </div>
