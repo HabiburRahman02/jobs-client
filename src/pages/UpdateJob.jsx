@@ -2,10 +2,12 @@ import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from '../providers/AuthProvider'
+import toast from 'react-hot-toast'
 
 const UpdateJob = () => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date())
   const { id } = useParams();
@@ -20,8 +22,18 @@ const UpdateJob = () => {
   }, [id])
 
   const handleUpdateJob = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const data = Object.fromEntries(formData.entries());
 
-
+    axios.put(`http://localhost:9000/job-update/${id}`, data)
+      .then(data => {
+        console.log(data.data);
+        if (data.data.modifiedCount) {
+          toast.success('Job updated successfully')
+          navigate(-1)
+        }
+      })
   }
 
 
