@@ -2,7 +2,8 @@
 
 import { Link } from 'react-router-dom'
 
-const JobCard = () => {
+const JobCard = ({ job }) => {
+  const { job_title, category, description, min_price, max_price } = job
   return (
     <Link
       to={`/job/1`}
@@ -13,22 +14,20 @@ const JobCard = () => {
           Deadline: 28/05/2024
         </span>
         <span className='px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full '>
-          Web Development
+          {category}
         </span>
       </div>
 
       <div>
         <h1 className='mt-2 text-lg font-semibold text-gray-800 '>
-          E-commerce Website Development
+          {job_title}
         </h1>
 
         <p className='mt-2 text-sm text-gray-600 '>
-          Dramatically redefine bleeding-edge infrastructures after
-          client-focused value. Intrinsicly seize user-centric partnerships
-          through out-of-the-box architectures. Distinctively.
+          {description}
         </p>
         <p className='mt-2 text-sm font-bold text-gray-600 '>
-          Range: $500 - $600
+          Range: ${min_price} - ${min_price}
         </p>
         <p className='mt-2 text-sm font-bold text-gray-600 '>Total Bids: 0</p>
       </div>
