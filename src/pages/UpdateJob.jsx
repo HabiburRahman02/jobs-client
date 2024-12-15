@@ -5,6 +5,14 @@ import 'react-datepicker/dist/react-datepicker.css'
 const UpdateJob = () => {
   const [startDate, setStartDate] = useState(new Date())
 
+  // const handleUpdateJob = id => {
+  //   axios.delete(`http://localhost:9000/job/${id}`)
+  //     .then(data => {
+
+  //     })
+  // }
+
+
   return (
     <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
       <section className=' p-2 md:p-6 mx-auto bg-white rounded-md shadow-md '>
@@ -98,7 +106,7 @@ const UpdateJob = () => {
             ></textarea>
           </div>
           <div className='flex justify-end mt-6'>
-            <button className='px-8 py-2.5 leading-5 text-white transition-colors duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600'>
+            <button onClick={() => handleUpdateJob()} className='px-8 py-2.5 leading-5 text-white transition-colors duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600'>
               Save
             </button>
           </div>
