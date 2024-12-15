@@ -110,7 +110,14 @@ const MyPostedJobs = () => {
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>
                         <div className='flex items-center gap-x-2'>
                           <p
-                            className={`px-3 py-1  text-blue-500 bg-blue-100/60 text-xs  rounded-full`}
+                            className={`px-3 py-1
+                               ${job.category === 'Web Development' && ' text-blue-500'} 
+                               
+                               ${job.category === 'Digital Marketing' && ' text-green-500'}
+                                
+                               ${job.category === 'Graphics Design' && ' text-pink-500'} 
+                               bg-blue-100/60 text-xs  rounded-full`}
+
                           >
                             {job.category}
                           </p>

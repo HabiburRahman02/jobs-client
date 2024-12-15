@@ -3,10 +3,10 @@
 import { Link } from 'react-router-dom'
 
 const JobCard = ({ job }) => {
-  const { job_title, category, description, min_price, max_price, deadline } = job
+  const { _id, job_title, category, description, min_price, max_price, deadline } = job
   return (
     <Link
-      to={`/job/1`}
+      to={`/job/${_id}`}
       className='w-full max-w-sm px-4 py-3 bg-white rounded-md shadow-md hover:scale-105 transition-all'
     >
       <div className='flex items-center justify-between'>
@@ -24,7 +24,7 @@ const JobCard = ({ job }) => {
         </h1>
 
         <p className='mt-2 text-sm text-gray-600 '>
-          {description}
+          {description.slice(0, 20)}
         </p>
         <p className='mt-2 text-sm font-bold text-gray-600 '>
           Range: ${min_price} - ${max_price}
