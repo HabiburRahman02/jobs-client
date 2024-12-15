@@ -1,9 +1,28 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { AuthContext } from '../providers/AuthProvider'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const AddJob = () => {
+  const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date())
+
+  const handleAddJob = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const data = Object.fromEntries(formData.entries());
+
+    axios.post('http://localhost:9000/jobs', data)
+      .then(data => {
+        console.log(data.data);
+        if (data.data.insertedId) {
+          toast.success('Job post added')
+        }
+      })
+
+  }
 
   return (
     <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
@@ -12,7 +31,7 @@ const AddJob = () => {
           Post a Job
         </h2>
 
-        <form>
+        <form onSubmit={handleAddJob}>
           <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
             <div>
               <label className='text-gray-700 ' htmlFor='job_title'>
@@ -31,6 +50,7 @@ const AddJob = () => {
                 Email Address
               </label>
               <input
+                defaultValue={user?.email}
                 id='emailAddress'
                 type='email'
                 name='email'
