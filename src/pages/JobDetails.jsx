@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useParams } from 'react-router-dom'
 import { AuthContext } from '../providers/AuthProvider'
+import toast from 'react-hot-toast'
 
 const JobDetails = () => {
   const { user } = useContext(AuthContext)
@@ -19,6 +20,35 @@ const JobDetails = () => {
         setJob(data.data)
       })
   }, [])
+
+  const handleBids = e => {
+    e.preventDefault();
+    const form = e.target;
+    const price = form.price.value
+    const email = user?.email
+    const comment = form.comment.value
+    const deadline = new Date().getTime()
+
+    // 1. deadline validation
+    const buyerDeadline = new Date(job.deadline)
+    const bidderDeadline = new Date(startDate)
+    if (bidderDeadline > buyerDeadline) {
+      return toast.error('Deadline has passed, you cannot proceed with bidding.');
+    }
+
+    // 2. price validation
+    if (parseFloat(price) > job.max_price) {
+      return toast.error(`price maximum ${job.max_price}`)
+    }
+
+    // 3. email validation
+    if (job?.email === user?.email) {
+      return toast.error('This user can not bid')
+    }
+
+    const bids = { price, email, comment, deadline };
+    console.log(bids);
+  }
 
   return (
     <div className='flex flex-col md:flex-row justify-around gap-5  items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto '>
@@ -52,10 +82,10 @@ const JobDetails = () => {
               </p>
             </div>
             <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
-              <img
+              {/* <img
                 src='https://i.ibb.co.com/qsfs2TW/Ix-I18-R8-Y-400x400.jpg'
                 alt=''
-              />
+              /> */}
             </div>
           </div>
           <p className='mt-6 text-lg font-bold text-gray-600 '>
@@ -69,7 +99,7 @@ const JobDetails = () => {
           Place A Bid
         </h2>
 
-        <form>
+        <form onSubmit={handleBids}>
           <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
             <div>
               <label className='text-gray-700 ' htmlFor='price'>
