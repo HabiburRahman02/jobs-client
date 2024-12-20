@@ -47,7 +47,6 @@ const JobDetails = () => {
       return toast.error(`price maximum ${job.max_price}`)
     }
 
-
     const bids = {
       bid_id: job?._id,
       price,
@@ -56,7 +55,7 @@ const JobDetails = () => {
       deadline: deadline,
       job_title: job.job_title,
       category: job.category,
-      status: 'pending',
+      status: 'Pending',
       buyerEmail: job.email
     };
 

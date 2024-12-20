@@ -5,13 +5,25 @@ import { AuthContext } from "../providers/AuthProvider";
 const BidRequests = () => {
   const { user } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
-  console.log(jobs);
+
   useEffect(() => {
     axios.get(`http://localhost:9000/bid-requests/${user?.email}`)
       .then(data => {
         setJobs(data.data);
       })
   }, [])
+
+  const handleStatus = (id, prevStatus, status) => {
+    console.log(id, prevStatus, status);
+
+    axios.patch(`http://localhost:9000/bid-status-update/${id}`, { status })
+      .then(data => {
+        console.log(data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
 
   return (
     <section className='container px-4 mx-auto my-12'>
@@ -102,19 +114,21 @@ const BidRequests = () => {
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>
                         <div className='flex items-center gap-x-2'>
                           <p className='px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs'>
-                            Web Development
+                            {job.category}
                           </p>
                         </div>
                       </td>
                       <td className='px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap'>
                         <div className='inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500'>
                           <span className='h-1.5 w-1.5 rounded-full bg-green-500'></span>
-                          <h2 className='text-sm font-normal '>Complete</h2>
+                          <h2 className='text-sm font-normal '>
+                            {job.status}
+                          </h2>
                         </div>
                       </td>
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>
                         <div className='flex items-center gap-x-6'>
-                          <button className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
+                          <button onClick={() => handleStatus(job._id, job.status, 'In Progress')} className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               fill='none'
