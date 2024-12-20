@@ -7,11 +7,12 @@ const MyBids = () => {
   const [jobs, setJobs] = useState([]);
   console.log(jobs);
   useEffect(() => {
-    axios.get(` http://localhost:9000/bids/${user?.email}`)
+    axios.get(`http://localhost:9000/bids/${user?.email}`)
       .then(data => {
         setJobs(data.data);
       })
-  }, [])
+  }, [user.email])
+
   return (
     <section className='container px-4 mx-auto my-12'>
       <div className='flex items-center gap-x-3'>

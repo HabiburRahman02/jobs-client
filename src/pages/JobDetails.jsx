@@ -56,9 +56,10 @@ const JobDetails = () => {
       deadline: deadline,
       job_title: job.job_title,
       category: job.category,
-      status: 'pending'
+      status: 'pending',
+      buyerEmail: job.email
     };
-    console.log(bids);
+
     //  send data in server using axios
     axios.post('http://localhost:9000/bids', bids)
       .then(data => {
