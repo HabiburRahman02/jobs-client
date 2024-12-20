@@ -13,12 +13,14 @@ const AddJob = () => {
     e.preventDefault();
     const formData = new FormData(e.target)
     const data = Object.fromEntries(formData.entries());
+    data.bid_count = 0
     // console.log(data);
     axios.post('http://localhost:9000/jobs', data)
       .then(data => {
         console.log(data.data);
         if (data.data.insertedId) {
           toast.success('Job post added')
+          e.target.reset();
         }
       })
 

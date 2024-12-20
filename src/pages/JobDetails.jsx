@@ -12,7 +12,7 @@ const JobDetails = () => {
   const [startDate, setStartDate] = useState(new Date())
   const { id } = useParams();
   const [job, setJob] = useState({});
-
+  console.log(job);
   useEffect(() => {
     axios.get(`http://localhost:9000/jobById/${id}`)
       .then(data => {
@@ -27,11 +27,17 @@ const JobDetails = () => {
     const price = form.price.value
     const email = user?.email
     const comment = form.comment.value
-    const deadline = new Date().getTime()
+    const deadline = new Date(startDate).toLocaleDateString('en-US')
 
     // 1. deadline validation
     const buyerDeadline = new Date(job.deadline)
     const bidderDeadline = new Date(startDate)
+
+    // 3. email validation
+    if (job?.email === user?.email) {
+      return toast.error('You cant not bid you job post try another')
+    }
+
     if (bidderDeadline > buyerDeadline) {
       return toast.error('Deadline has passed, you cannot proceed with bidding.');
     }
@@ -41,13 +47,30 @@ const JobDetails = () => {
       return toast.error(`price maximum ${job.max_price}`)
     }
 
-    // 3. email validation
-    if (job?.email === user?.email) {
-      return toast.error('This user can not bid')
-    }
 
-    const bids = { price, email, comment, deadline };
+    const bids = {
+      bid_id: job?._id,
+      price,
+      email,
+      comment,
+      deadline: deadline,
+      job_title: job.job_title,
+      category: job.category,
+      status: 'pending'
+    };
     console.log(bids);
+    //  send data in server using axios
+    axios.post('http://localhost:9000/bids', bids)
+      .then(data => {
+        console.log(data.data);
+        if (data.data.insertedId) {
+          toast.success('Bid successfully')
+        }
+      })
+      .catch(error => {
+        return toast.error(error.response.data.message)
+      })
+
   }
 
   return (
