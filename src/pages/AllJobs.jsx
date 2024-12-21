@@ -8,15 +8,21 @@ const AllJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [status, setStatus] = useState('');
   const [search, setSearch] = useState('')
-  console.log(search);
+  const [sort, setSort] = useState('')
 
   useEffect(() => {
-    axios.get(`http://localhost:9000/all-jobs?filterByCategory=${status}&search=${search}`)
+    axios.get(`http://localhost:9000/all-jobs?filterByCategory=${status}&search=${search}&sort=${sort}`)
       .then(data => {
         setJobs(data.data)
         console.log(data.data);
       })
-  }, [status, search])
+  }, [status, search, sort])
+
+  const handleReset = () => {
+    setStatus('')
+    setSearch('')
+    setSort('')
+  }
 
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
@@ -27,6 +33,7 @@ const AllJobs = () => {
               name='category'
               id='category'
               className='border p-4 rounded-lg'
+              value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
               <option value=''>Filter By Category</option>
@@ -44,6 +51,7 @@ const AllJobs = () => {
                 name='search'
                 placeholder='Enter Job Title'
                 aria-label='Enter Job Title'
+                value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
 
@@ -58,13 +66,15 @@ const AllJobs = () => {
               name='category'
               id='category'
               className='border p-4 rounded-md'
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
             >
               <option value=''>Sort By Deadline</option>
               <option value='dsc'>Descending Order</option>
               <option value='asc'>Ascending Order</option>
             </select>
           </div>
-          <button className='btn'>Reset</button>
+          <button onClick={handleReset} className='btn'>Reset</button>
         </div>
         <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {
