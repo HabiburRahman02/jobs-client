@@ -31,7 +31,7 @@ const BidRequests = () => {
         <h2 className='text-lg font-medium text-gray-800 '>Bid Requests</h2>
 
         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full '>
-          4 Requests
+          {jobs.length} job
         </span>
       </div>
 
@@ -128,7 +128,10 @@ const BidRequests = () => {
                       </td>
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>
                         <div className='flex items-center gap-x-6'>
-                          <button onClick={() => handleStatus(job._id, job.status, 'In Progress')} className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
+                          <button
+                            disabled={job.status === 'In Progress' || job.status === 'Completed'}
+                            onClick={() => handleStatus(job._id, job.status, 'In Progress')}
+                            className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'>
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               fill='none'
@@ -145,7 +148,10 @@ const BidRequests = () => {
                             </svg>
                           </button>
 
-                          <button className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'>
+                          <button
+                            onClick={() => handleStatus(job._id, job.status, 'Rejected')}
+                            disabled={job.status === 'In Progress' || job.status === 'Completed'}
+                            className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'>
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               fill='none'

@@ -5,13 +5,35 @@ import { AuthContext } from "../providers/AuthProvider";
 const MyBids = () => {
   const { user } = useContext(AuthContext);
   const [jobs, setJobs] = useState([]);
-  console.log(jobs);
+  // console.log(jobs);
   useEffect(() => {
     axios.get(`http://localhost:9000/bids/${user?.email}`)
       .then(data => {
         setJobs(data.data);
       })
   }, [user.email])
+
+  const handleStatus = (id, prevStatus, status) => {
+    console.log(id, prevStatus, status);
+
+    if (prevStatus === 'In Progress') {
+      axios.patch(`http://localhost:9000/bid-status-update/${id}`, { status })
+        .then(() => {
+          setJobs(prevBids =>
+            prevBids.map(bid =>
+              bid._id === id ? { ...bid, status } : bid
+            )
+          );
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+    else {
+      return console.log('not allowed');
+    }
+  }
+
 
   return (
     <section className='container px-4 mx-auto my-12'>
@@ -112,8 +134,10 @@ const MyBids = () => {
                         </td>
                         <td className='px-4 py-4 text-sm whitespace-nowrap'>
                           <button
+                            onClick={() => handleStatus(job._id, job.status, 'Complete')}
                             title='Mark Complete'
-                            className='text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed'
+                            disabled={job.status !== 'In Progress'}
+                            className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'
                           >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'

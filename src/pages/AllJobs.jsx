@@ -1,9 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { useLoaderData } from 'react-router-dom'
 import JobCard from '../components/JobCard'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AllJobs = () => {
-  const jobs = useLoaderData();
+  const [jobs, setJobs] = useState([]);
+  const [status, setStatus] = useState('');
+  const [search, setSearch] = useState('')
+  console.log(search);
+
+  useEffect(() => {
+    axios.get(`http://localhost:9000/all-jobs?filterByCategory=${status}&search=${search}`)
+      .then(data => {
+        setJobs(data.data)
+        console.log(data.data);
+      })
+  }, [status, search])
+
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
       <div>
@@ -13,6 +27,7 @@ const AllJobs = () => {
               name='category'
               id='category'
               className='border p-4 rounded-lg'
+              onChange={(e) => setStatus(e.target.value)}
             >
               <option value=''>Filter By Category</option>
               <option value='Web Development'>Web Development</option>
@@ -29,9 +44,11 @@ const AllJobs = () => {
                 name='search'
                 placeholder='Enter Job Title'
                 aria-label='Enter Job Title'
+                onChange={(e) => setSearch(e.target.value)}
               />
 
-              <button className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none'>
+              <button
+                className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none'>
                 Search
               </button>
             </div>
